@@ -1,7 +1,22 @@
+set(INCLUDE_FILES
+        mathlimits.h
+        mathutil.h
+        exactfloat/exactfloat.h
+        matrix3x3.h
+        matrix3x3-inl.h
+        vector2.h
+        vector2-inl.h
+        vector3.h
+        vector3-inl.h
+        vector4.h
+        vector4-inl.h)
 
-add_library(google-util-math
+set(SOURCE_FILES
         mathlimits.cc
         mathutil.cc
         exactfloat/exactfloat.cc)
 
-target_include_directories(google-util-math PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(google-util-math
+        OBJECT
+        ${INCLUDE_FILES}
+        ${SOURCE_FILES})

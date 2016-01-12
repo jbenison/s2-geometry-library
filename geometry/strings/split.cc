@@ -1,6 +1,7 @@
 // Copyright 2008 and onwards Google Inc.  All rights reserved.
 
 #include <limits>
+#include <unistd.h>
 using std::numeric_limits;
 
 
@@ -31,6 +32,29 @@ static const uint64 MIX64 = GG_ULONGLONG(0x2b992ddfa23249d6);  // more of pi
 // Note that these methods may return any value for the given size, while
 // the corresponding HashToXX() methods avoids certain reserved values.
 // ----------------------------------------------------------------------
+
+
+const uint32 kPrimes32[16] ={
+        65537, 65539, 65543, 65551, 65557, 65563, 65579, 65581,
+        65587, 65599, 65609, 65617, 65629, 65633, 65647, 65651,
+};
+
+uint32 Hash32StringWithSeed(const char *s, uint32 len, uint32 seed) {
+  uint32 n = seed;
+  size_t prime1 = 0, prime2 = 8;  // Indices into kPrimes32
+  union {
+      uint16 n;
+      char bytes[sizeof(uint16)];
+  } chunk;
+  for (const char *i = s, *const end = s + len; i != end; ) {
+    chunk.bytes[0] = *i++;
+    chunk.bytes[1] = i == end ? 0 : *i++;
+    n = n * kPrimes32[prime1++] ^ chunk.n * kPrimes32[prime2++];
+    prime1 &= 0x0F;
+    prime2 &= 0x0F;
+  }
+  return n;
+}
 
 // These slow down a lot if inlined, so do not inline them  --Sanjay
 extern uint32 Hash32StringWithSeed(const char *s, uint32 len, uint32 c);
@@ -118,24 +142,24 @@ namespace __gnu_cxx {
 
 #if defined(__GNUC__)
 // Use our nice hash function for strings
-template<class _CharT, class _Traits, class _Alloc>
-struct hash<basic_string<_CharT, _Traits, _Alloc> > {
-  size_t operator()(const basic_string<_CharT, _Traits, _Alloc>& k) const {
-    return HashTo32(k.data(), static_cast<uint32>(k.length()));
-  }
-};
+    template<class _CharT, class _Traits, class _Alloc>
+    struct hash<basic_string<_CharT, _Traits, _Alloc> > {
+        size_t operator()(const basic_string<_CharT, _Traits, _Alloc>& k) const {
+          return HashTo32(k.data(), static_cast<uint32>(k.length()));
+        }
+    };
 
 // they don't define a hash for const string at all
-template<> struct hash<const string> {
-  size_t operator()(const string& k) const {
-    return HashTo32(k.data(), static_cast<uint32>(k.length()));
-  }
-};
+    template<> struct hash<const string> {
+        size_t operator()(const string& k) const {
+          return HashTo32(k.data(), static_cast<uint32>(k.length()));
+        }
+    };
 #endif  // __GNUC__
 
 // MSVC's STL requires an ever-so slightly different decl
 #if defined STL_MSVC
-template<> struct hash<char const*> : PortableHashBase {
+    template<> struct hash<char const*> : PortableHashBase {
   size_t operator()(char const* const k) const {
     return HashTo32(k, strlen(k));
   }
@@ -166,48 +190,48 @@ namespace {
 // errors, perhaps since string != std::string.
 // This is not a fully functional iterator, but is
 // sufficient for SplitStringToIteratorUsing().
-template <typename T>
-struct simple_insert_iterator {
-  T* t_;
-  simple_insert_iterator(T* t) : t_(t) { }
+    template <typename T>
+    struct simple_insert_iterator {
+        T* t_;
+        simple_insert_iterator(T* t) : t_(t) { }
 
-  simple_insert_iterator<T>& operator=(const typename T::value_type& value) {
-    t_->insert(value);
-    return *this;
-  }
+        simple_insert_iterator<T>& operator=(const typename T::value_type& value) {
+          t_->insert(value);
+          return *this;
+        }
 
-  simple_insert_iterator<T>& operator*()     { return *this; }
-  simple_insert_iterator<T>& operator++()    { return *this; }
-  simple_insert_iterator<T>& operator++(int) { return *this; }
-};
+        simple_insert_iterator<T>& operator*()     { return *this; }
+        simple_insert_iterator<T>& operator++()    { return *this; }
+        simple_insert_iterator<T>& operator++(int) { return *this; }
+    };
 
 // Used to populate a hash_map out of pairs of consecutive strings in
 // SplitStringToIterator{Using|AllowEmpty}().
-template <typename T>
-struct simple_hash_map_iterator {
-  typedef hash_map<T, T> hashmap;
-  hashmap* t;
-  bool even;
-  typename hashmap::iterator curr;
+    template <typename T>
+    struct simple_hash_map_iterator {
+        typedef hash_map<T, T> hashmap;
+        hashmap* t;
+        bool even;
+        typename hashmap::iterator curr;
 
-  simple_hash_map_iterator(hashmap* t_init) : t(t_init), even(true) {
-    curr = t->begin();
-  }
+        simple_hash_map_iterator(hashmap* t_init) : t(t_init), even(true) {
+          curr = t->begin();
+        }
 
-  simple_hash_map_iterator<T>& operator=(const T& value) {
-    if (even) {
-      curr = t->insert(make_pair(value, T())).first;
-    } else {
-      curr->second = value;
-    }
-    even = !even;
-    return *this;
-  }
+        simple_hash_map_iterator<T>& operator=(const T& value) {
+          if (even) {
+            curr = t->insert(make_pair(value, T())).first;
+          } else {
+            curr->second = value;
+          }
+          even = !even;
+          return *this;
+        }
 
-  simple_hash_map_iterator<T>& operator*()       { return *this; }
-  simple_hash_map_iterator<T>& operator++()      { return *this; }
-  simple_hash_map_iterator<T>& operator++(int i) { return *this; }
-};
+        simple_hash_map_iterator<T>& operator*()       { return *this; }
+        simple_hash_map_iterator<T>& operator++()      { return *this; }
+        simple_hash_map_iterator<T>& operator++(int i) { return *this; }
+    };
 
 }  // anonymous namespace
 

@@ -1,6 +1,12 @@
+set(INCLUDE_FILES
+        coder.h
+        varint.h)
 
-add_library(google-util-coding
+set(SOURCE_FILES
         coder.cc
         varint.cc)
 
-target_include_directories(google-util-coding PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(google-util-coding
+        OBJECT
+        ${INCLUDE_FILES}
+        ${SOURCE_FILES})

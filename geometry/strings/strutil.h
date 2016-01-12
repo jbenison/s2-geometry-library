@@ -65,7 +65,7 @@ static const int kFastToBufferSize =       32;
 #include "stringprintf.h"
 #include "base/stl_decl.h"
 #include "base/port.h"
-#include "endian.h"
+//#include "endian.h"
 
 // ----------------------------------------------------------------------
 // FpToString()
@@ -140,20 +140,20 @@ char* FastHex32ToBuffer(uint32 i, char* buffer);
 
 // at least 22 bytes long
 inline char* FastIntToBuffer(int i, char* buffer) {
-  return (sizeof(i) == 4 ?
-          FastInt32ToBuffer(i, buffer) : FastInt64ToBuffer(i, buffer));
+    return (sizeof(i) == 4 ?
+            FastInt32ToBuffer(i, buffer) : FastInt64ToBuffer(i, buffer));
 }
 inline char* FastUIntToBuffer(unsigned int i, char* buffer) {
-  return (sizeof(i) == 4 ?
-          FastUInt32ToBuffer(i, buffer) : FastUInt64ToBuffer(i, buffer));
+    return (sizeof(i) == 4 ?
+            FastUInt32ToBuffer(i, buffer) : FastUInt64ToBuffer(i, buffer));
 }
 inline char* FastLongToBuffer(long i, char* buffer) {
-  return (sizeof(i) == 4 ?
-          FastInt32ToBuffer(i, buffer) : FastInt64ToBuffer(i, buffer));
+    return (sizeof(i) == 4 ?
+            FastInt32ToBuffer(i, buffer) : FastInt64ToBuffer(i, buffer));
 }
 inline char* FastULongToBuffer(unsigned long i, char* buffer) {
-  return (sizeof(i) == 4 ?
-          FastUInt32ToBuffer(i, buffer) : FastUInt64ToBuffer(i, buffer));
+    return (sizeof(i) == 4 ?
+            FastUInt32ToBuffer(i, buffer) : FastUInt64ToBuffer(i, buffer));
 }
 
 // A generic "number type" to buffer template and specializations.
@@ -163,16 +163,16 @@ inline char* FastULongToBuffer(unsigned long i, char* buffer) {
 //    FastNumToBuffer(mynums);         // no
 template<typename T> char* FastNumToBuffer(T, char*);
 template<> inline char* FastNumToBuffer<int32>(int32 i, char* buffer) {
-  return FastInt32ToBuffer(i, buffer);
+    return FastInt32ToBuffer(i, buffer);
 }
 template<> inline char* FastNumToBuffer<int64>(int64 i, char* buffer) {
-  return FastInt64ToBuffer(i, buffer);
+    return FastInt64ToBuffer(i, buffer);
 }
 template<> inline char* FastNumToBuffer<uint32>(uint32 i, char* buffer) {
-  return FastUInt32ToBuffer(i, buffer);
+    return FastUInt32ToBuffer(i, buffer);
 }
 template<> inline char* FastNumToBuffer<uint64>(uint64 i, char* buffer) {
-  return FastUInt64ToBuffer(i, buffer);
+    return FastUInt64ToBuffer(i, buffer);
 }
 
 // ----------------------------------------------------------------------
@@ -198,12 +198,12 @@ char* FastUInt64ToBufferLeft(uint64 i, char* buffer);    // at least 22 bytes
 
 // Just define these in terms of the above.
 inline char* FastUInt32ToBuffer(uint32 i, char* buffer) {
-  FastUInt32ToBufferLeft(i, buffer);
-  return buffer;
+    FastUInt32ToBufferLeft(i, buffer);
+    return buffer;
 }
 inline char* FastUInt64ToBuffer(uint64 i, char* buffer) {
-  FastUInt64ToBufferLeft(i, buffer);
-  return buffer;
+    FastUInt64ToBufferLeft(i, buffer);
+    return buffer;
 }
 
 // ----------------------------------------------------------------------
@@ -222,7 +222,7 @@ void ConsumeStrayLeadingZeroes(string* str);
 // --------------------------------------------------------------------
 int32 ParseLeadingInt32Value(const char* str, int32 deflt);
 inline int32 ParseLeadingInt32Value(const string& str, int32 deflt) {
-  return ParseLeadingInt32Value(str.c_str(), deflt);
+    return ParseLeadingInt32Value(str.c_str(), deflt);
 }
 
 // ParseLeadingUInt32Value
@@ -234,7 +234,7 @@ inline int32 ParseLeadingInt32Value(const string& str, int32 deflt) {
 // --------------------------------------------------------------------
 uint32 ParseLeadingUInt32Value(const char* str, uint32 deflt);
 inline uint32 ParseLeadingUInt32Value(const string& str, uint32 deflt) {
-  return ParseLeadingUInt32Value(str.c_str(), deflt);
+    return ParseLeadingUInt32Value(str.c_str(), deflt);
 }
 
 // ----------------------------------------------------------------------
@@ -248,7 +248,7 @@ inline uint32 ParseLeadingUInt32Value(const string& str, uint32 deflt) {
 // --------------------------------------------------------------------
 int32 ParseLeadingDec32Value(const char* str, int32 deflt);
 inline int32 ParseLeadingDec32Value(const string& str, int32 deflt) {
-  return ParseLeadingDec32Value(str.c_str(), deflt);
+    return ParseLeadingDec32Value(str.c_str(), deflt);
 }
 
 // ParseLeadingUDec32Value
@@ -261,7 +261,7 @@ inline int32 ParseLeadingDec32Value(const string& str, int32 deflt) {
 // --------------------------------------------------------------------
 uint32 ParseLeadingUDec32Value(const char* str, uint32 deflt);
 inline uint32 ParseLeadingUDec32Value(const string& str, uint32 deflt) {
-  return ParseLeadingUDec32Value(str.c_str(), deflt);
+    return ParseLeadingUDec32Value(str.c_str(), deflt);
 }
 
 // ----------------------------------------------------------------------
@@ -276,23 +276,23 @@ inline uint32 ParseLeadingUDec32Value(const string& str, uint32 deflt) {
 // --------------------------------------------------------------------
 uint64 ParseLeadingUInt64Value(const char* str, uint64 deflt);
 inline uint64 ParseLeadingUInt64Value(const string& str, uint64 deflt) {
-  return ParseLeadingUInt64Value(str.c_str(), deflt);
+    return ParseLeadingUInt64Value(str.c_str(), deflt);
 }
 int64 ParseLeadingInt64Value(const char* str, int64 deflt);
 inline int64 ParseLeadingInt64Value(const string& str, int64 deflt) {
-  return ParseLeadingInt64Value(str.c_str(), deflt);
+    return ParseLeadingInt64Value(str.c_str(), deflt);
 }
 uint64 ParseLeadingHex64Value(const char* str, uint64 deflt);
 inline uint64 ParseLeadingHex64Value(const string& str, uint64 deflt) {
-  return ParseLeadingHex64Value(str.c_str(), deflt);
+    return ParseLeadingHex64Value(str.c_str(), deflt);
 }
 int64 ParseLeadingDec64Value(const char* str, int64 deflt);
 inline int64 ParseLeadingDec64Value(const string& str, int64 deflt) {
-  return ParseLeadingDec64Value(str.c_str(), deflt);
+    return ParseLeadingDec64Value(str.c_str(), deflt);
 }
 uint64 ParseLeadingUDec64Value(const char* str, uint64 deflt);
 inline uint64 ParseLeadingUDec64Value(const string& str, uint64 deflt) {
-  return ParseLeadingUDec64Value(str.c_str(), deflt);
+    return ParseLeadingUDec64Value(str.c_str(), deflt);
 }
 
 // -------------------------------------------------------------------------
@@ -305,6 +305,6 @@ inline uint64 ParseLeadingUDec64Value(const string& str, uint64 deflt) {
 //    otherwise.
 // -------------------------------------------------------------------------
 bool DictionaryParse(const string& encoded_str,
-                      vector<pair<string, string> >* items);
+                     vector<pair<string, string> >* items);
 
 #endif   /* #ifndef STRINGS_STRUTIL_H_ */
