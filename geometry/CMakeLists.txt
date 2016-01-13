@@ -102,8 +102,6 @@ target_include_directories(s2
     )
 
 if(BUILD_TESTING)
-  enable_testing()
-  find_package(GTest REQUIRED)
   include_directories(${GTEST_INCLUDE_DIR})
 
   set(TEST_SOURCES

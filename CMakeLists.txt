@@ -32,6 +32,11 @@ endif()
 
 find_package(Threads REQUIRED)
 
+if(BUILD_TESTING)
+  enable_testing()
+  find_package(GTest REQUIRED)
+endif()
+
 # The actual s2-geometry-library
 add_subdirectory(geometry)
 
