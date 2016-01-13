@@ -1,18 +1,21 @@
-# Creates libgoogle-strings.a
-set(SOURCE_FILES
-        ascii_ctype.cc
-        split.cc
-        stringprintf.cc
-        strutil.cc
-        ../util/hash/hash_jenkins_lookup2.h)
+# Creates $<TARGET_OBJECTS:google-strings>
+set(STRINGS_PUBLIC_H
+    ascii_ctype.h
+    split.h
+    stringprintf.h
+    strutil.h
+    ../util/hash/hash_jenkins_lookup2.h
+    )
 
-set(INCLUDE_FILES
-        ascii_ctype.h
-        split.h
-        stringprintf.h
-        strutil.h)
+set(STRINGS_SOURCES
+    ${STRINGS_PUBLIC_H}
+    ascii_ctype.cc
+    split.cc
+    stringprintf.cc
+    strutil.cc
+    )
 
 add_library(google-strings
-        OBJECT
-        ${INCLUDE_FILES}
-        ${SOURCE_FILES})
+    OBJECT
+    ${STRINGS_SOURCES}
+    )

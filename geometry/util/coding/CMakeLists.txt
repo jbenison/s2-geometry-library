@@ -1,12 +1,16 @@
-set(INCLUDE_FILES
-        coder.h
-        varint.h)
+# Creates $<TARGET_OBJECTS:google-util-coding>
+set(UTIL_CODING_PUBLIC_H
+    coder.h
+    varint.h
+    )
 
-set(SOURCE_FILES
-        coder.cc
-        varint.cc)
+set(UTIL_CODING_SOURCES
+    ${UTIL_CODING_PUBLIC_H}
+    coder.cc
+    varint.cc
+    )
 
 add_library(google-util-coding
-        OBJECT
-        ${INCLUDE_FILES}
-        ${SOURCE_FILES})
+    OBJECT
+    ${UTIL_CODING_SOURCES}
+    )

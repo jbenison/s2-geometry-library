@@ -1,26 +1,38 @@
-cmake_minimum_required(VERSION 3.3)
-project(s2_geometry_library)
+# Old enough to support Ubuntu Trusty.
+cmake_minimum_required(VERSION 2.8.12)
+project(s2-geometry-library)
 
 # Won't build with c++11
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Set the install prefix
-# Install target not yet implemented
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-    set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 endif()
 
 # Add cmake options
-option(BUILD_EXAMPLES "Enable or disable building examples" OFF)
+option(BUILD_EXAMPLES "build examples" OFF)
+option(BUILD_SHARED_LIBS "build shared libraries" OFF)
 
 # For resolving headers
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry/strings)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry
+    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/strings
+    )
 
 # The actual s2-geometry-library
 add_subdirectory(geometry)
 
 # Add examples in here
 if(BUILD_EXAMPLES)
-    add_subdirectory(examples)
+  add_subdirectory(examples)
 endif()
+
+# Add uninstall target
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY
+    )
+
+add_custom_target(uninstall
+    "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake/cmake_uninstall.cmake"
+    )
