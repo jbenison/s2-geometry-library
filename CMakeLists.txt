@@ -15,9 +15,7 @@ option(BUILD_EXAMPLES "build examples" OFF)
 option(BUILD_SHARED_LIBS "build shared libraries" OFF)
 
 # For resolving headers
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry
-    ${CMAKE_CURRENT_SOURCE_DIR}/geometry/strings
-    )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry)
 
 # The actual s2-geometry-library
 add_subdirectory(geometry)
