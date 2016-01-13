@@ -17,6 +17,18 @@ option(BUILD_SHARED_LIBS "build shared libraries" OFF)
 # For resolving headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry)
 
+find_package(gflags REQUIRED)
+if (gflags_FOUND)
+  include_directories(${gflags_INCLUDE_DIR})
+  link_libraries(${gflags_LIBRARIES})
+endif()
+
+find_package(OpenSSL REQUIRED)
+if (OPENSSL_FOUND)
+  include_directories(${OPENSSL_INCLUDE_DIR})
+  link_libraries(${OPENSSL_LIBRARIES})
+endif()
+
 # The actual s2-geometry-library
 add_subdirectory(geometry)
 
