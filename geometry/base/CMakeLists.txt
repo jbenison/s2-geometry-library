@@ -10,9 +10,6 @@ set(BASE_PUBLIC_H
     macros.h
     port.h
     scoped_ptr.h
-    stl_decl.h
-    stl_decl_msvc.h
-    stl_decl_osx.h
     stringprintf.h
     strtoint.h
     template_util.h
