@@ -12,12 +12,12 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include <gtest/gtest.h>
 
 #include "base/commandlineflags.h"
 #include "base/stringprintf.h"
 #include "base/logging.h"
 #include "testing/base/public/benchmark.h"
-#include "testing/base/public/gunit.h"
 #include "s2cap.h"
 #include "s2cell.h"
 #include "s2cellid.h"

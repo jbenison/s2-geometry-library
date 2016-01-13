@@ -6,12 +6,12 @@
 using std::set;
 using std::multiset;
 
+#include <gtest/gtest.h>
 
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/scoped_ptr.h"
 #include "strings/stringprintf.h"
-#include "testing/base/public/gunit.h"
 #include "s2cap.h"
 #include "s2polygon.h"
 #include "s2polyline.h"

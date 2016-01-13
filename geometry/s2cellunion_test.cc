@@ -11,10 +11,10 @@ using std::reverse;
 #include <vector>
 using std::vector;
 
+#include <gtest/gtest.h>
 
 #include "base/integral_types.h"
 #include "base/logging.h"
-#include "testing/base/public/gunit.h"
 #include "s2cellid.h"
 #include "s2cell.h"
 #include "s2cap.h"

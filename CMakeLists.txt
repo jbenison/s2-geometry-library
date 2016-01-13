@@ -13,6 +13,7 @@ endif()
 # Add cmake options
 option(BUILD_EXAMPLES "build examples" OFF)
 option(BUILD_SHARED_LIBS "build shared libraries" OFF)
+option(BUILD_TESTING "build testing" OFF)
 
 # For resolving headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry)
@@ -28,6 +29,8 @@ if (OPENSSL_FOUND)
   include_directories(${OPENSSL_INCLUDE_DIR})
   set(LIBS ${LIBS} ${OPENSSL_LIBRARIES})
 endif()
+
+find_package(Threads REQUIRED)
 
 # The actual s2-geometry-library
 add_subdirectory(geometry)

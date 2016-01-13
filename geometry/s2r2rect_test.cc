@@ -5,8 +5,9 @@
 
 #include "s2r2rect.h"
 
+#include <gtest/gtest.h>
+
 #include "strings/stringprintf.h"
-#include "testing/base/public/gunit.h"
 #include "s2.h"
 #include "s2cap.h"
 #include "s2cell.h"

@@ -22,14 +22,13 @@ using std::string;
 #include <vector>
 using std::vector;
 
+#include <gtest/gtest.h>
 
 #include "base/commandlineflags.h"
 #include "base/logging.h"
 #include "base/strtoint.h"
 #include "strings/split.h"
 #include "strings/stringprintf.h"
-#include "testing/base/public/benchmark.h"
-#include "testing/base/public/gunit.h"
 #include "s2cap.h"
 #include "s2cell.h"
 #include "s2cellid.h"
@@ -267,24 +266,3 @@ TEST(S2RegionCoverer, Accuracy) {
     TestAccuracy(atoi32(max_cells[i].c_str()));
   }
 }
-
-
-// Two concentric loops don't cross so there is no 'fast exit'
-static void BM_Covering(int iters, int max_cells, int num_vertices) {
-  StopBenchmarkTiming();
-  S2RegionCoverer coverer;
-  coverer.set_max_cells(max_cells);
-
-  for (int i = 0; i < iters; ++i) {
-    S2Point center = S2Testing::RandomPoint();
-    S2Loop* loop = S2Testing::MakeRegularLoop(center, num_vertices, 0.005);
-
-    StartBenchmarkTiming();
-    vector<S2CellId> covering;
-    coverer.GetCovering(*loop, &covering);
-    StopBenchmarkTiming();
-
-    delete loop;
-  }
-}
-BENCHMARK(BM_Covering)->RangePair(8, 1024, 8, 1<<17);

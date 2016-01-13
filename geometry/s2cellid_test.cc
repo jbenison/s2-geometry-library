@@ -16,13 +16,13 @@ using __gnu_cxx::hash_map;
 #include <vector>
 using std::vector;
 
+#include <gtest/gtest.h>
 
 #include "base/commandlineflags.h"
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/malloc_interface.h"
 #include "base/sysinfo.h"
-#include "testing/base/public/gunit.h"
 #include "s2.h"
 #include "s2latlng.h"
 #include "s2testing.h"
@@ -327,7 +327,7 @@ TEST(S2CellId, Neighbors) {
 
 TEST(S2CellId, OutputOperator) {
   S2CellId cell(0xbb04000000000000ULL);
-  ostringstream s;
+  std::ostringstream s;
   s << cell;
   EXPECT_EQ("5/31200", s.str());
 }

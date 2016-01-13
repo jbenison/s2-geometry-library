@@ -3,11 +3,11 @@
 #include "s1angle.h"
 
 #include <sstream>
+#include <gtest/gtest.h>
 
 #include "base/commandlineflags.h"
 #include "base/integral_types.h"
 #include "base/logging.h"
-#include "testing/base/public/gunit.h"
 #include "s2latlng.h"
 #include "s2testing.h"
 
@@ -105,7 +105,7 @@ TEST(S1Angle, ConstructorsThatMeasureAngles) {
 }
 
 TEST(S1Angle, TestFormatting) {
-  ostringstream ss;
+  std::ostringstream ss;
   ss << S1Angle::Degrees(180.0);
   EXPECT_EQ("180.0000000", ss.str());
 }

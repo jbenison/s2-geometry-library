@@ -10,10 +10,10 @@ using std::multimap;
 #include <vector>
 using std::vector;
 
+#include <gtest/gtest.h>
 
 #include "base/commandlineflags.h"
 #include "base/logging.h"
-#include "testing/base/public/gunit.h"
 #include "s2.h"
 #include "s2cap.h"
 #include "s2latlngrect.h"

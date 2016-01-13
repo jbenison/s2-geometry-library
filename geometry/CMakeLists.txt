@@ -101,6 +101,48 @@ target_include_directories(s2
     ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
+if(BUILD_TESTING)
+  enable_testing()
+  find_package(GTest REQUIRED)
+  include_directories(${GTEST_INCLUDE_DIR})
+
+  set(TEST_SOURCES
+      s2testing.h
+      s2testing.cc
+      s2test.cc
+      )
+
+  set(TEST_TARGETS
+      r1interval_test
+      s1angle_test
+      s1interval_test
+      s2_test
+      s2cap_test
+      s2cell_test
+      #s2cellid_test
+      s2cellunion_test
+      #s2edgeindex_test
+      #s2edgeutil_test
+      #s2latlng_test
+      s2latlngrect_test
+      #s2loop_test
+      s2pointregion_test
+      #s2polygon_test
+      s2polygonbuilder_test
+      s2polyline_test
+      s2r2rect_test
+      s2regioncoverer_test
+      s2regionunion_test
+      )
+
+  foreach(target ${TEST_TARGETS})
+    add_executable(${target} ${target}.cc ${TEST_SOURCES})
+    target_link_libraries(${target} s2 s2cellid ${LIBS} ${GTEST_LIBRARY})
+    add_test(NAME ${target} COMMAND ${target})
+  endforeach(target)
+
+endif(BUILD_TESTING)
+
 # Install headers
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
     DESTINATION include/s2
