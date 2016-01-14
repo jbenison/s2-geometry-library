@@ -141,6 +141,18 @@ if(BUILD_TESTING)
 
 endif(BUILD_TESTING)
 
+if(BUILD_BENCHMARKS)
+  include_directories(${BENCHMARK_INCLUDE_DIR})
+
+  set(BENCHMARK_SOURCES
+      s2testing.h
+      s2testing.cc
+      )
+
+  add_executable(s2regioncoverer_benchmark s2regioncoverer_benchmark.cc ${BENCHMARK_SOURCES})
+  target_link_libraries(s2regioncoverer_benchmark s2 s2cellid ${LIBS} ${BENCHMARK_LIBRARY})
+endif(BUILD_BENCHMARKS)
+
 # Install headers
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
     DESTINATION include/s2

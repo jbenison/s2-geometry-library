@@ -14,9 +14,12 @@ endif()
 option(BUILD_EXAMPLES "build examples" OFF)
 option(BUILD_SHARED_LIBS "build shared libraries" OFF)
 option(BUILD_TESTING "build testing" OFF)
+option(BUILD_BENCHMARKS "build benchmarks" OFF)
 
 # For resolving headers
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/geometry)
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 find_package(gflags REQUIRED)
 if (gflags_FOUND)
@@ -32,10 +35,15 @@ endif()
 
 find_package(Threads REQUIRED)
 
-if(BUILD_TESTING)
+if(BUILD_TESTING OR BUILD_BENCHMARKS)
   enable_testing()
-  find_package(GTest REQUIRED)
-endif()
+  if(BUILD_TESTING)
+    find_package(GTest REQUIRED)
+  endif(BUILD_TESTING)
+  if(BUILD_BENCHMARKS)
+    find_package(Benchmark REQUIRED)
+  endif(BUILD_BENCHMARKS)
+endif(BUILD_TESTING OR BUILD_BENCHMARKS)
 
 # The actual s2-geometry-library
 add_subdirectory(geometry)

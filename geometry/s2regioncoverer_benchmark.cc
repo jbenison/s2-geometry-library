@@ -1,4 +1,5 @@
 #include "s2regioncoverer.h"
+#include "s2testing.h"
 
 #include <benchmark/benchmark.h>
 
