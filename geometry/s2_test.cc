@@ -8,6 +8,7 @@ using std::reverse;
 
 #include <hash_set>
 using __gnu_cxx::hash_set;
+using __gnu_cxx::hash;
 
 #include <gtest/gtest.h>
 
@@ -702,8 +703,8 @@ TEST(S2, Frames) {
   EXPECT_TRUE(S2::ApproxEquals(S2::FromFrame(m, S2Point(0, 1, 0)), m.Col(1)));
   EXPECT_TRUE(S2::ApproxEquals(S2::FromFrame(m, S2Point(0, 0, 1)), m.Col(2)));
 }
-// @TODO: Fix hash
-/*TEST(S2, S2PointHashSpreads) {
+
+TEST(S2, S2PointHashSpreads) {
   int kTestPoints = 1 << 16;
   hash_set<size_t> set;
   hash_set<S2Point> points;
@@ -721,7 +722,7 @@ TEST(S2, Frames) {
   EXPECT_EQ(0, kTestPoints - points.size());
   // Allow a few for the hash.
   EXPECT_GE(10, kTestPoints - set.size());
-}*/
+}
 
 TEST(S2, S2PointHashCollapsesZero) {
   double zero = 0;
