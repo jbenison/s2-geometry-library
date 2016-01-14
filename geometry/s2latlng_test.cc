@@ -1,11 +1,10 @@
 // Copyright 2005 Google Inc. All Rights Reserved.
 
+#include <gtest/gtest.h>
 #include "s2latlng.h"
 #include "base/macros.h"
 #include "base/stringprintf.h"
 #include "strings/split.h"
-#include "testing/base/public/gunit.h"
-#include "testing/base/public/benchmark.h"
 #include "s2testing.h"
 
 TEST(S2LatLng, TestBasic) {
@@ -125,12 +124,3 @@ TEST(S2LatLng, TestToStringReturnsString) {
   S2LatLng::FromDegrees(0, 1).ToStringInDegrees(&s);
   EXPECT_EQ(S2LatLng::FromDegrees(0, 1).ToStringInDegrees(), s);
 }
-
-
-static void BM_ToPoint(int iters) {
-    S2LatLng ll(S1Angle::E7(0x150bc888), S1Angle::E7(0x5099d63f));
-    for (int i = 0; i < iters; i++) {
-      ll.ToPoint();
-    }
-}
-BENCHMARK(BM_ToPoint);

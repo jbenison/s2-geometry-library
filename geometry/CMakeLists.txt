@@ -107,7 +107,7 @@ if(BUILD_TESTING)
   set(TEST_SOURCES
       s2testing.h
       s2testing.cc
-      s2test.cc
+      s2main_test.cc
       )
 
   set(TEST_TARGETS
@@ -119,13 +119,13 @@ if(BUILD_TESTING)
       s2cell_test
       s2cellid_test
       s2cellunion_test
-      #s2edgeindex_test
-      #s2edgeutil_test
-      #s2latlng_test
+      s2edgeindex_test
+      s2edgeutil_test
+      s2latlng_test
       s2latlngrect_test
-      #s2loop_test
+      s2loop_test
       s2pointregion_test
-      #s2polygon_test
+      s2polygon_test
       s2polygonbuilder_test
       s2polyline_test
       s2r2rect_test
