@@ -1,10 +1,41 @@
 #include "s2polygon.h"
 
 #include <benchmark/benchmark.h>
+#include <gflags/gflags.h>
+#include "util/math/matrix3x3-inl.h"
+#include "util/coding/coder.h"
+#include "s2testing.h"
 
+DEFINE_int32(num_loops_per_polygon_for_bm,
+10,
+"Number of loops per polygon to use for an s2polygon "
+"encode/decode benchmark. Can be a maximum of 90.");
+
+string GenerateInputForBenchmark(int num_vertices_per_loop_for_bm) {
+  CHECK_LE(FLAGS_num_loops_per_polygon_for_bm, 90);
+  vector<S2Loop*> loops;
+  for (int li = 0; li < FLAGS_num_loops_per_polygon_for_bm; ++li) {
+    vector<S2Point> vertices;
+    double radius_degrees =
+        1.0 + (50.0 * li) / FLAGS_num_loops_per_polygon_for_bm;
+    for (int vi = 0; vi < num_vertices_per_loop_for_bm; ++vi) {
+      double angle_radians = (2 * M_PI * vi) / num_vertices_per_loop_for_bm;
+      double lat = radius_degrees * cos(angle_radians);
+      double lng = radius_degrees * sin(angle_radians);
+      vertices.push_back(S2LatLng::FromDegrees(lat, lng).ToPoint());
+    }
+    loops.push_back(new S2Loop(vertices));
+  }
+  S2Polygon polygon_to_encode(&loops);
+
+  Encoder encoder;
+  polygon_to_encode.Encode(&encoder);
+  string encoded(encoder.base(), encoder.length());
+
+  return encoded;
+}
 
 static void BM_S2Decoding(int iters, int num_vertices_per_loop_for_bm) {
-  StopBenchmarkTiming();
   string encoded = GenerateInputForBenchmark(num_vertices_per_loop_for_bm);
   StartBenchmarkTiming();
   for (int i = 0; i < iters; ++i) {
@@ -17,7 +48,6 @@ BENCHMARK_RANGE(BM_S2Decoding, 8, 131072);
 
 static void BM_S2DecodingWithinScope(int iters,
                                      int num_vertices_per_loop_for_bm) {
-  StopBenchmarkTiming();
   string encoded = GenerateInputForBenchmark(num_vertices_per_loop_for_bm);
   StartBenchmarkTiming();
   for (int i = 0; i < iters; ++i) {

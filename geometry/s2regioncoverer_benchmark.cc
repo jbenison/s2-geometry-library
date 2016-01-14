@@ -5,7 +5,6 @@
 
 // Two concentric loops don't cross so there is no 'fast exit'
 static void BM_Covering(int iters, int max_cells, int num_vertices) {
-    StopBenchmarkTiming();
     S2RegionCoverer coverer;
     coverer.set_max_cells(max_cells);
 

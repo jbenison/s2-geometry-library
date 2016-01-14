@@ -149,8 +149,20 @@ if(BUILD_BENCHMARKS)
       s2testing.cc
       )
 
-  add_executable(s2regioncoverer_benchmark s2regioncoverer_benchmark.cc ${BENCHMARK_SOURCES})
-  target_link_libraries(s2regioncoverer_benchmark s2 s2cellid ${LIBS} ${BENCHMARK_LIBRARY})
+  set(BENCHMARK_TARGETS
+      s2edgeindex_benchmark
+      s2edgeutil_benchmark
+      s2latlng_benchmark
+      s2loop_benchmark
+      s2polygon_benchmark
+      s2regioncoverer_benchmark
+      )
+
+  foreach(target ${BENCHMARK_TARGETS})
+    add_executable(${target} ${target}.cc ${BENCHMARK_SOURCES})
+    target_link_libraries(${target} s2 s2cellid ${LIBS} ${BENCHMARK_LIBRARY})
+  endforeach(target)
+
 endif(BUILD_BENCHMARKS)
 
 # Install headers

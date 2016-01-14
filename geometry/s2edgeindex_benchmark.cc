@@ -3,6 +3,64 @@
 
 #include <benchmark/benchmark.h>
 
+#include "s2testing.h"
+#include "s2loop.h"
+#include "s2cap.h"
+
+// @TODO: Eliminate code duplication. This typdef is also used in test.
+typedef pair<S2Point, S2Point> S2Edge;
+
+// @TODO: Eliminate code duplication. This const is also used in test.
+static const double kEarthRadiusMeters = 6371000;
+
+// Generates a random edge whose center is in the given cap.
+// @TODO: Eliminate code duplication. This function is also used in test.
+static S2Edge RandomEdgeCrossingCap(double max_length_meters,
+                                    const S2Cap& cap) {
+    // Pick the edge center at random.
+    S2Point edge_center = S2Testing::SamplePoint(cap);
+    // Pick two random points in a suitably sized cap about the edge center.
+    S2Cap edge_cap = S2Cap::FromAxisAngle(
+        edge_center,
+        S1Angle::Radians(max_length_meters / kEarthRadiusMeters / 2));
+    S2Point p1 = S2Testing::SamplePoint(edge_cap);
+    S2Point p2 = S2Testing::SamplePoint(edge_cap);
+    return S2Edge(p1, p2);
+}
+
+// Generates "num_edges" random edges, of length at most
+// "edge_length_meters_max" and each of whose center is in a randomly located
+// cap with radius "cap_span_meters", and puts results into "edges".
+// @TODO: Eliminate code duplication. This function is also used in test.
+static void GenerateRandomEarthEdges(double edge_length_meters_max,
+                                     double cap_span_meters,
+                                     int num_edges,
+                                     vector<S2Edge>* edges) {
+    S2Cap cap = S2Cap::FromAxisAngle(
+        S2Testing::RandomPoint(),
+        S1Angle::Radians(cap_span_meters / kEarthRadiusMeters));
+    for (int i = 0; i < num_edges; ++i) {
+        edges->push_back(RandomEdgeCrossingCap(edge_length_meters_max, cap));
+    }
+}
+
+// @TODO: Eliminate code duplication. This class is also used in test.
+class EdgeVectorIndex: public S2EdgeIndex {
+public:
+  explicit EdgeVectorIndex(vector<S2Edge> const* edges):
+      edges_(edges) {}
+
+  virtual int num_edges() const { return edges_->size(); }
+  virtual S2Point const* edge_from(int index) const {
+      return &((*edges_)[index].first);
+  }
+  virtual S2Point const* edge_to(int index) const {
+      return &((*edges_)[index].second);
+  }
+private:
+  vector<S2Edge> const* edges_;
+};
+
 // Generates a bunch of random edges and tests each against all others for
 // crossings. This is just for benchmarking; there's no correctness testing in
 // this function. Set "cutoff_level" negative to apply brute force checking.

@@ -1087,28 +1087,3 @@ TEST_F(S2PolygonSimplifierTest, LargeRegularPolygon) {
   EXPECT_GE(250, simplified->num_vertices());
   EXPECT_LE(200, simplified->num_vertices());
 }
-
-string GenerateInputForBenchmark(int num_vertices_per_loop_for_bm) {
-  CHECK_LE(FLAGS_num_loops_per_polygon_for_bm, 90);
-  vector<S2Loop*> loops;
-  for (int li = 0; li < FLAGS_num_loops_per_polygon_for_bm; ++li) {
-    vector<S2Point> vertices;
-    double radius_degrees =
-        1.0 + (50.0 * li) / FLAGS_num_loops_per_polygon_for_bm;
-    for (int vi = 0; vi < num_vertices_per_loop_for_bm; ++vi) {
-      double angle_radians = (2 * M_PI * vi) / num_vertices_per_loop_for_bm;
-      double lat = radius_degrees * cos(angle_radians);
-      double lng = radius_degrees * sin(angle_radians);
-      vertices.push_back(S2LatLng::FromDegrees(lat, lng).ToPoint());
-    }
-    loops.push_back(new S2Loop(vertices));
-  }
-  S2Polygon polygon_to_encode(&loops);
-
-  Encoder encoder;
-  polygon_to_encode.Encode(&encoder);
-  string encoded(encoder.base(), encoder.length());
-
-  return encoded;
-}
-
