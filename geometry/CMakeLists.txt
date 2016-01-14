@@ -117,7 +117,7 @@ if(BUILD_TESTING)
       s2_test
       s2cap_test
       s2cell_test
-      #s2cellid_test
+      s2cellid_test
       s2cellunion_test
       #s2edgeindex_test
       #s2edgeutil_test
