@@ -2,11 +2,10 @@
 # libs2.a
 # libs2cellid.a
 
-# Project won't build without these flags
-# @TODO: Fix this.
-add_definitions(-DNDEBUG)
 # @TODO: Use MPFR?
 add_definitions(-DS2_USE_EXACTFLOAT)
+# @TODO: Use std::hash, std::unordered_map
+add_definitions(-DHASH_NAMESPACE=__gcc_cxx)
 
 # Builds $<TARGET_OBJECTS:google-base>
 add_subdirectory(base)
