@@ -1,6 +1,6 @@
 # Creates $<TARGET_OBJECTS:google-strings>
 set(STRINGS_PUBLIC_H
-    ascii_ctype.h
+    #ascii_ctype.h
     split.h
     stringprintf.h
     strutil.h
@@ -9,7 +9,7 @@ set(STRINGS_PUBLIC_H
 
 set(STRINGS_SOURCES
     ${STRINGS_PUBLIC_H}
-    ascii_ctype.cc
+    #ascii_ctype.cc
     split.cc
     stringprintf.cc
     strutil.cc
