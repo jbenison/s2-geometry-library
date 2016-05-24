@@ -34,6 +34,9 @@ if (OPENSSL_FOUND)
 endif()
 
 find_package(Threads REQUIRED)
+if (THREADS_FOUND)
+  set(LIBS ${LIBS} ${CMAKE_THREAD_LIBS_INIT})
+endif()
 
 if(BUILD_TESTING OR BUILD_BENCHMARKS)
   enable_testing()
